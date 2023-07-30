@@ -2,6 +2,7 @@
 import os
 from src.textSummarizer.config.configuration import DataValidationConfig
 
+
 class DataValidation:
 
     def __init__(self, config: DataValidationConfig):
