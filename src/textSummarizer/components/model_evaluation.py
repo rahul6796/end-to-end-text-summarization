@@ -58,15 +58,15 @@ class ModelEvaluation:
         tokenizer = AutoTokenizer.from_pretrained(self.config.tokenizer_path)
         model_pegasus = AutoModelForSeq2SeqLM.from_pretrained(self.config.model_path).to(device)
 
-        dataset_samsung_pt =load_from_disk(self.config.data_path)
+        dataset_samsum_pt = load_from_disk(self.config.data_path)
 
         rouge_name = ["rouge1", "rouge2", "rougeL", "rougeLsum"]
 
         rouge_metric = load_metric("rouge")
 
         score = self.calculate_metric_on_test_ds(
-            dataset_samsung_pt['test'][0:10],
-            rouge_metric, model_pegasus, tokenizer, batch_size=2, column_text=,
+            dataset_samsum_pt['test'][0:10], rouge_metric, model_pegasus, tokenizer, batch_size=2,
+            column_text='dialogue', column_summary='summary'
         )
 
         rouge_dict = dict((rn, score[rn].mid.fmeasure) for rn in rouge_name)
