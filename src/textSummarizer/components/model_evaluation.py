@@ -4,6 +4,7 @@ import torch.cuda
 from src.textSummarizer.config.configuration import ModelEvaluationConfig
 from tqdm import tqdm
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
+from datasets import load_metric, load_from_disk
 
 
 class ModelEvaluation:
@@ -57,7 +58,11 @@ class ModelEvaluation:
         tokenizer = AutoTokenizer.from_pretrained(self.config.tokenizer_path)
         model_pegasus = AutoModelForSeq2SeqLM.from_pretrained(self.config.model_path).to(device)
 
-        dataset_samsung_pt = ["rouge1", "rouge2", "rougeL", "rougeLsum"]
+        dataset_samsung_pt =load_from_disk(self.config.data_path)
+
+        rouge_name = ["rouge1", "rouge2", "rougeL", "rougeLsum"]
+
+        rouge_metric = load_metric("rouge")
 
         score = self.calculate_metric_on_test_ds(
             dataset_samsung_pt['test'][0:10],
